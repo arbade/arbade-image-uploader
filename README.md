@@ -33,3 +33,17 @@ Design a Serverless Image Uploader via AWS CDK.It would be able to see receive a
     1. [High-Level-Design](#high-level-design)
     2. [HHL Descriptions](#hhl-descriptions)
     3. [Improvements](#improvements)
+
+## Pre-requirements
+
+- Python3 (3.9 is recommended).
+- NodeJS and Npm (14.18 and 6.14 recommended)
+- The AWS CDK (2.55 recommended)
+- An AWS Account with your Access Key and Secret Access Key.
+
+## Project Tree
+will be added
+
+## General Architecture
+![The services used for this project](./docs/serverless-images-uploader.drawio.png)
+
