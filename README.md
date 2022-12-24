@@ -31,7 +31,7 @@ Design a Serverless Image Uploader via AWS CDK.It would be able to see receive a
     2. [Serverless API References](#serverless-api-references)
 8. [Brain-Storming](#brain-storming)
     1. [High-Level-Design](#high-level-design)
-    2. [HHL Descriptions](#hhl-descriptions)
+    2. [HLD Descriptions](#hld-descriptions)
     3. [Improvements](#improvements)
 
 ## Pre-requirements
@@ -133,7 +133,7 @@ Finally, It would be able to see uploaded image(s) via CloudFront Distribution D
 ### High-Level-Design
 - It would be able to see High Level Design of Case Study
 ![High Level Design Architecture](./docs/hhd_case.png)
-### HHL Descriptions
+### HLD Descriptions
 - DDoS protection is implemented with AWS Shield and AWS WAF to mitigate both network and application layer attacks. AWS WAF is configured to block cross-site scripting, SQL injection, bad bots and user agents, and more.
 - Amazon Route 53 DNS is protected with AWS Shield and anycast striping and shuffle sharding to ensure increased availability.
 - Amazon CloudFront enables further DDoS mitigation by splitting any DDoS traffic across 100+ edge locations, and accelerating and caching content. It accelerates delivery of both static content such as HTML, CSS, and JavaScript (JS) via S3, and dynamic content served via API Gateway.
