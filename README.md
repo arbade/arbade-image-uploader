@@ -10,3 +10,6 @@
 ![aws api gateway](https://img.shields.io/badge/aws-api--gateway-orange)
 ![aws dynamodb](https://img.shields.io/badge/aws-dynamodb-orange)
 ![aws cloudfront](https://img.shields.io/badge/aws-cloudfront-orange)
+
+## Overall
+Design a Serverless Image Uploader via AWS CDK.It would be able to see receive an image and save it to an S3 Bucket.It will also invoke another Lambda function to write data into a database.
