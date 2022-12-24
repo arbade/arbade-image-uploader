@@ -7,7 +7,9 @@ from aws_cdk import (
     aws_s3_deployment as s3deploy,
     aws_cloudfront_origins as origins,
     aws_dynamodb as ddb,
-)
+)  
+
+from  aws_cdk.core import Duration
 
 
 class ServelessImageUploaderStack(cdk.Stack):
@@ -18,7 +20,7 @@ class ServelessImageUploaderStack(cdk.Stack):
         # S3
         images_bucket = s3.Bucket(
             self, 'ImagesBucket',
-            public_read_access=True
+            public_read_access=False
         )
 
         front_end_bucket = s3.Bucket(
@@ -33,10 +35,18 @@ class ServelessImageUploaderStack(cdk.Stack):
             destination_bucket=front_end_bucket
         )
 
+        my_cache_policy = cloudfront.CachePolicy(self, "myCachePolicy",
+             cache_policy_name="MyPolicy",
+             comment="A default policy",
+             default_ttl=Duration.seconds(7),
+             min_ttl=Duration.seconds(7),
+             max_ttl=Duration.seconds(7)
+         )
+
         # CloudFront
         images_cdn = cloudfront.Distribution(
             self, "ImagesDistribution",
-            default_behavior=cloudfront.BehaviorOptions(origin=origins.S3Origin(images_bucket))
+            default_behavior=cloudfront.BehaviorOptions(origin=origins.S3Origin(images_bucket),cache_policy=my_cache_policy)
         )
 
         # DynamoDB

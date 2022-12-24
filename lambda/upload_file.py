@@ -26,8 +26,11 @@ def handler(event, context):
     else:
         file_base_64 = base64.b64decode(file_content)
 
-    unique_id = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    
+    #unique_id = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    unique_id = file_name+"upl-img"
     full_path = '{}/{}'.format(unique_id, file_name)
+    #full_path = '{}/{}'.format(unique_id, file_name)
 
     bucket.put_object(
         Key=full_path,

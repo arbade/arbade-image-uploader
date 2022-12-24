@@ -144,3 +144,17 @@ Finally, It would be able to see uploaded image(s) via CloudFront Distribution D
 - Buckets must be private and it could be possible to access from over CloudFront.Maybe it is possible to change CloudFront Distribution and switch to `Legacy access identities` (`Use a CloudFront origin access identity (OAI) to access the S3 bucket.`) after then; `Create new OAI` from `Origin access identity`. Finally, update the bucket policy.
 - In this repository, it's only possible to upload `jpeg` images.For the best practice case; it should be refactoring the code block and added some validation on application layer.At the end of day; application logic should be support all image types (E.g png,jpeg,svg..any etc)
 - For the different scenarios; dev and test environment will be hosted private and accessible from internal facing Application Load Balancer and creating any VPN (such as OpenVPN) and accessible from VPN Tunnel for developers and test engineers
+- It should be use the SSL Certificate and configure CloudFront Distribution;CloudFront assigns a default domain name to your distribution, for example, d111111abcdef8.cloudfront.net. If you use this domain name, then you can use the CloudFront default SSL/TLS certificate already selected for your distribution. If you use a different domain name for your distribution, then it's a best practice to do one of the following to avoid domain-name-related certificate warnings:
+
+If you use an Amazon issued certificate:
+
+You must request the certificate in the US East (N. Virginia) Region.
+You must have permission to use and request the ACM certificate.
+If you use an imported certificate with CloudFront:
+
+Your key length must be 1024 or 2048 bits and cannot exceed 2048 bits.
+You must import the certificate in the US East (N. Virginia) Region.
+You must have permission to use and import the SSL/TLS certificate.
+Note: If you are missing permissions, the CloudFront console displays Missing permission acm:ListCertificates in the Custom SSL Certificate settings. If you don't have a certificate in the US East (N. Virginia) Region, or if your key size exceeds 2048 bits, the setting for Custom SSL Certificate is grayed out.
+
+- Maybe it could be possible to use private artifactory for npm or yarn packages.(E.g Jfrog Artifactory and Nexus) and configure to `.npmrc` & `.yarnrc`
