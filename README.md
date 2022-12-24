@@ -47,3 +47,91 @@ will be added
 ## General Architecture
 ![The services used for this project](./docs/serverless-images-uploader.drawio.png)
 
+## Service Descriptions
+It would be able to see service descriptions at the below that:
+This is what our infrastructure looks like. Our project is composed of the following services:
+
+- `S3` - the project is composed of two buckets: the one that will contain the code of our React application (which will allow us to upload the images) and another one that will contain all of our uploaded images.
+- `Lambda` - these (serverless) functions will :
+- - -> Receive an image and save it to an S3 Bucket. It will also invoke another Lambda function to write data into a database.
+- - -> Write to the database the name of the image, its type, and its path in the S3 bucket.
+- - -> Retrieve the images from DynamoDB and display them in the front-end.
+- `API Gateway` - This is the front door to our API. This service, also serverless, will be in charge of putting us in communication with the right resource, Lambda functions for instance.
+- `DynamoDB` - This is our database, also serverless. It’s not a relational database, as MySQL might be, it’s a NoSQL database.
+- `CloudFront` - this is a CDN. Its role is to cache images coming from the S3 bucket.
+
+## Cold-Start
+#### Setting up the React application
+
+- `cd front-app` - Go the Front-end directory project
+- `yarn` - Install the dependencies
+- `yarn start` - Launch the React project
+- `yarn build` - Build a production version of the project. **You will need to
+  do that if you want to deploy the project to AWS**
+
+#### Installing the CDK, set up the env and deploy it to AWS
+-  `npm install -g aws-cdk`: Install the AWS CDK
+- `python3 -m venv .venv`: Create a virtualenv` on MacOS and Linux
+- `source .venv/bin/activate`: Activate your virtualenv
+- `% .venv\Scripts\activate.bat`: If you are on Windows, you would activate
+  your virtualenv with this command.
+- `pip install -r requirements.txt`: Once the virtualenv is activate,
+  you can install the required dependencies.
+- `cdk bootstrap`: Bootstrap the AWS CDK
+- `cdk synth`: Synthethise the CDK code into a CloudFormation template
+- `cdk deploy`: Deploy the project on AWS.
+
+**WARNING**: you need to build your React application before runing the `cdk
+deploy` command.
+
+#### Adding the API Gateway URL
+
+Before you go try upload images, copy the output of the deploy command, it
+looks like this one: **https://4ooi3ccx66.execute-api.us-east-1.amazonaws.com/prod**
+
+Copy and paste this link in the following files:
+
+- `scripts/upload_images.py` - It's the BASE_URL
+- `front-app/src/constants.ts`
+#### Tearing down your AWS resources
+- `cdk destroy`: delete the resources from your AWS account.
+
+#### Miscalenous
+
+There is `script` folder in the project. It contains images and a python script
+and will populate some data to the project.
+
+- `python scripts/upload_images.py` - Upload example images.
+
+## API-References
+It would be able to see API-References such as:
+
+#### React Web App Path References
+- It could be possible to access the react web app from local with `{PATH}`:
+- localhost:3000/`{PATH}`
+
+| PATH      | DESCRIPTION           |   |   |   |
+|-----------|-----------------------|---|---|---|
+| /         | Home Page             |   |   |   |
+| /upload    | Image Upload Page     |   |   |   |
+| /file-list | Uploaded Image Images |   |   |   |
+#### Serverless API References
+- It would be able to see API Gateway's References with AGW ID's such as:
+- https://`{AGW_ID}`.execute-api.us-east-1.amazonaws.com/`{PATH}`
+- E.g `https://1r4gala9jk.execute-api.us-east-1.amazonaws.com/prod/hello`
+
+| PATH         | DESCRIPTION                   |   |
+|--------------|-------------------------------|---|
+| /prod/hello  | Hello, World from the AWS CDK |   |
+| /prod/images | List of uploaded image(s)       |   |
+
+Finally, It would be able to see uploaded image(s) via CloudFront Distribution Domain Name like as:
+- `https://d86ogd2pwc8o1.cloudfront.net/20221223102916/Cat.jpeg`
+
+## Brain-Storming
+
+### High-Level-Design
+- It would be able to see High Level Design of Case Study
+![High Level Design Architecture](./docs/hhd_case.png)
+### HHL Descriptions
+### Improvements
