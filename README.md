@@ -134,4 +134,13 @@ Finally, It would be able to see uploaded image(s) via CloudFront Distribution D
 - It would be able to see High Level Design of Case Study
 ![High Level Design Architecture](./docs/hhd_case.png)
 ### HHL Descriptions
+- DDoS protection is implemented with AWS Shield and AWS WAF to mitigate both network and application layer attacks. AWS WAF is configured to block cross-site scripting, SQL injection, bad bots and user agents, and more.
+- Amazon Route 53 DNS is protected with AWS Shield and anycast striping and shuffle sharding to ensure increased availability.
+- Amazon CloudFront enables further DDoS mitigation by splitting any DDoS traffic across 100+ edge locations, and accelerating and caching content. It accelerates delivery of both static content such as HTML, CSS, and JavaScript (JS) via S3, and dynamic content served via API Gateway.
+- API Gateway implements CORS protection, restricts requests to only valid clients and sources, and authorizes all requests based on your configured authorizers. It validates requests against defined resource policies, and inputs against defined API models, to block any requests which don’t conform to expected schema before invoking your respective integrations.
+
 ### Improvements
+
+- Buckets must be private and it could be possible to access from over CloudFront.Maybe it is possible to change CloudFront Distribution and switch to `Legacy access identities` (`Use a CloudFront origin access identity (OAI) to access the S3 bucket.`) after then; `Create new OAI` from `Origin access identity`. Finally, update the bucket policy.
+- In this repository, it's only possible to upload `jpeg` images.For the best practice case; it should be refactoring the code block and added some validation on application layer.At the end of day; application logic should be support all image types (E.g png,jpeg,svg..any etc)
+- For the different scenarios; dev and test environment will be hosted private and accessible from internal facing Application Load Balancer and creating any VPN (such as OpenVPN) and accessible from VPN Tunnel for developers and test engineers

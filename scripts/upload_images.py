@@ -4,7 +4,7 @@ import json
 import os
 
 
-BASE_URL = 'https://2mkpmi4567.execute-api.us-east-1.amazonaws.com/prod/'
+BASE_URL = 'https://go3wfdxp0b.execute-api.us-east-1.amazonaws.com/prod/'
 FILE_PATH = './scripts/assets'
 FILES = os.listdir(FILE_PATH)
 
