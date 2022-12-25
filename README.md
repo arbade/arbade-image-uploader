@@ -42,7 +42,113 @@ Design a Serverless Image Uploader via AWS CDK.It would be able to see receive a
 - An AWS Account with your Access Key and Secret Access Key.
 
 ## Project Tree
-will be added
+
+- It would be able to see project structure at the below that:
+```
+➜  arbade-image-uploader git:(main) tree
+.
+├── README.md
+├── app.py
+├── cdk.json
+├── docs
+│   ├── hhd_case.png
+│   └── serverless-images-uploader.drawio.png
+├── front-app
+│   ├── README.md
+│   ├── build
+│   │   ├── asset-manifest.json
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   ├── robots.txt
+│   │   ├── screenshot.png
+│   │   └── static
+│   │       ├── css
+│   │       │   ├── main.8922d818.chunk.css
+│   │       │   └── main.8922d818.chunk.css.map
+│   │       └── js
+│   │           ├── 2.01f23f3e.chunk.js
+│   │           ├── 2.01f23f3e.chunk.js.LICENSE.txt
+│   │           ├── 2.01f23f3e.chunk.js.map
+│   │           ├── 3.d9980d8f.chunk.js
+│   │           ├── 3.d9980d8f.chunk.js.map
+│   │           ├── main.472c42c2.chunk.js
+│   │           ├── main.472c42c2.chunk.js.map
+│   │           ├── runtime-main.55c00667.js
+│   │           └── runtime-main.55c00667.js.map
+│   ├── package.json
+│   ├── public
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   ├── robots.txt
+│   │   └── screenshot.png
+│   ├── src
+│   │   ├── App.test.tsx
+│   │   ├── App.tsx
+│   │   ├── components
+│   │   │   ├── Button
+│   │   │   │   ├── index.css
+│   │   │   │   └── index.tsx
+│   │   │   └── Navigation
+│   │   │       ├── index.css
+│   │   │       └── index.tsx
+│   │   ├── constants.ts
+│   │   ├── global.css
+│   │   ├── index.tsx
+│   │   ├── logo.svg
+│   │   ├── pages
+│   │   │   ├── FilesList
+│   │   │   │   ├── index.css
+│   │   │   │   └── index.tsx
+│   │   │   ├── Home
+│   │   │   │   ├── index.css
+│   │   │   │   └── index.tsx
+│   │   │   └── Upload
+│   │   │       ├── index.css
+│   │   │       └── index.tsx
+│   │   ├── react-app-env.d.ts
+│   │   ├── reportWebVitals.ts
+│   │   └── setupTests.ts
+│   ├── tsconfig.json
+│   └── yarn.lock
+├── lambda
+│   ├── file_to_ddb.py
+│   ├── hello_world.py
+│   ├── list_files.py
+│   └── upload_file.py
+├── requirements.txt
+├── scripts
+│   ├── assets
+│   │   ├── dog.jpg
+│   │   ├── elephant.jpg
+│   │   ├── horse.jpg
+│   │   ├── kitten.jpg
+│   │   ├── seagull.jpg
+│   │   └── tealights.jpg
+│   └── upload_images.py
+├── serveless_image_uploader
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-310.pyc
+│   │   └── serveless_image_uploader_stack.cpython-310.pyc
+│   ├── serveless_image_uploader.egg-info
+│   │   ├── PKG-INFO
+│   │   ├── SOURCES.txt
+│   │   ├── dependency_links.txt
+│   │   ├── requires.txt
+│   │   └── top_level.txt
+│   └── serveless_image_uploader_stack.py
+├── setup.py
+├── source.bat
+└── yarn.lock
+
+```
+
 
 ## General Architecture
 ![The services used for this project](./docs/serverless-images-uploader.drawio.png)
@@ -146,15 +252,21 @@ Finally, It would be able to see uploaded image(s) via CloudFront Distribution D
 - For the different scenarios; dev and test environment will be hosted private and accessible from internal facing Application Load Balancer and creating any VPN (such as OpenVPN) and accessible from VPN Tunnel for developers and test engineers
 - It should be use the SSL Certificate and configure CloudFront Distribution;CloudFront assigns a default domain name to your distribution, for example, d111111abcdef8.cloudfront.net. If you use this domain name, then you can use the CloudFront default SSL/TLS certificate already selected for your distribution. If you use a different domain name for your distribution, then it's a best practice to do one of the following to avoid domain-name-related certificate warnings:
 
-If you use an Amazon issued certificate:
+- If you use an Amazon issued certificate:
 
-You must request the certificate in the US East (N. Virginia) Region.
+- - You must request the certificate in the US East (N. Virginia) Region.
 You must have permission to use and request the ACM certificate.
 If you use an imported certificate with CloudFront:
 
-Your key length must be 1024 or 2048 bits and cannot exceed 2048 bits.
+- Your key length must be 1024 or 2048 bits and cannot exceed 2048 bits.
 You must import the certificate in the US East (N. Virginia) Region.
 You must have permission to use and import the SSL/TLS certificate.
 Note: If you are missing permissions, the CloudFront console displays Missing permission acm:ListCertificates in the Custom SSL Certificate settings. If you don't have a certificate in the US East (N. Virginia) Region, or if your key size exceeds 2048 bits, the setting for Custom SSL Certificate is grayed out.
 
 - Maybe it could be possible to use private artifactory for npm or yarn packages.(E.g Jfrog Artifactory and Nexus) and configure to `.npmrc` & `.yarnrc`
+
+- Maybe it could be possible to use `resource-based policy` for the lambda functions, api gateway, s3 buckets, dynamodb..any etc.It should be use to `at least principle privilage`
+
+- Maybe it could be possible to use `IAM Role` for the CI/CD pipeline; so it is not necessary to use AWS Credentials with Github Secrets, just only assume role.
+
+- Maybe it could be possible to deploy AWS Lambda Functions `private subnets` which has route table connected to `NAT Gateway` so; we will be decreasing amount of `IPs`getting to use inside subnet and we should be determining the `CIDR Block` wide range. 
