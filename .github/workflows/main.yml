@@ -1,0 +1,55 @@
+name: main
+on: workflow_dispatch # manuel trigger
+env:
+    REGION: us-east-1 # default region
+    
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.REGION }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14.21.2
+          cache: 'yarn'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+
+      - name: front end build
+        run: |
+              ls -la 
+              yarn
+              yarn build
+        working-directory: ./front-app
+        env:
+            CI: false
+      - name: cdk deploy
+        run: |
+             npm install -g aws-cdk
+             python3 -m venv .venv
+             source .venv/bin/activate
+             pip install -r requirements.txt
+             cdk bootstrap
+             cdk synth
+             cdk deploy --require-approval=never
+
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: arbade
+      - name: cdk destroy
+        run: |
+             source .venv/bin/activate
+             cdk destroy --force
