@@ -48,7 +48,7 @@ jobs:
       - uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
-          approvers: arbade # will be add another approvers
+          approvers: arbade,azmimengu
       - name: cdk destroy
         run: |
              source .venv/bin/activate
